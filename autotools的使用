@@ -1,0 +1,122 @@
+GNU autotools安装
+
+1、下载软件包，在linux嵌入式开发过程中有很多的工具其实都在GNU的官方网站可以下载到 http://www.gnu.org/software/software.html 
+
+2、要安装autotools需要如下几个文件
+automake  
+autoconf  
+M4
+安装顺序是M4 ->  autoconf  -> automake  （很重要！！！！）
+
+安装需要的命令：
+tar zxvf **
+./configure   （从这开始应该：cd autoconf，因为当前目录中没有.configure文件，以下几个操作命令都是在autoonf目录下操作，记住了）
+make
+make install
+
+我下载的版本是;
+autoconf-2.63.tar.gz
+automake-1.9.1.tar.gz
+m4-1.4.11.tar.gz
+
+GNU autotools的使用
+
+Linux下，工程管理器 Make 可用于自动编译、链接程序的实用工具。我们要做的是写一个makefile 文件，然后用make命令来编译、链接程序。
+    Makefile的作用就是让编译器知道要编译一个文件需要依赖其他的哪些文件。这里我们就是要用GNU Autotools来收集系统配置信息并自动生成Makefile文件。
+GNU Autotools指的就是下面的五个工具:
+
+     （1）aclocal
+     （2）autoscan
+     （3）autoconf
+     （4）autoheader
+     （5）automake
+
+Autotools的使用流程
+
+    第一步：手工编写Makefile.am这个文件
+    第二步：在源代码目录树的最高层运行autoscan。然后手动修改configure.scan文件，并改名为configure.ac/configure.in。
+    第三步：运行aclocal，它会根据configure.ac的内容生成aclocal.m4文件。
+    第四步：运行autoconf，它根据configure.ac和aclocal.m4的内容生成configure这个配置脚本文件。
+    第五步：运行automake --add-missing,它根据Makefile.am的内容生成Makefile.in。
+    第六步：运行configure，它会根据Makefile.in的内容生成Makefile这个文件。
+      获得Makefile文件后，我们就可以使用make程序来管理我们的工程了
+
+下面我们来举个例子：
+
+有一个简单的工程，其目录和文件结构如下所述：工程的最高层目录test中有一个hello.c文件和lib、include两个子目录。在lib目录中有一个print.c文件，在include目录中有一个print.h文件。
+  （1）为该工程编写automake的输入配置脚本Makefile.am。
+  （2）使用Gnu Autotools工具为该工程创建Makefile文件，并编译该工程。
+
+这里我们总共有三个目录，但只要在 test目录 和 test/lib目录下分别创建Makefile.am文件，test/include不需要创建Makefile.am文件。文件内容如下：
+（1）hello.c
+
+    include "include/print.h"
+    int main(void)
+    {
+           print("Hello, Aillo\n");
+           return 0;
+    } 
+
+（2）print.h
+
+    void print ( char *s );
+
+（3）print.c
+
+    #include "../include/print.h"
+    #include
+    void print(char *string)
+    {
+           printf("%s",string);
+    }
+
+（4）test目录下的Makefile.am的内容：
+
+    SUBDIRS = lib
+
+    AUTOMAKE_OPTIONS = foreign
+    bin_PROGRAMS = hello
+    hello_SOURCES = hello.c
+
+    hello_LDADD = ./lib/libprint.a
+
+（5）lib目录下的Makefile.am的内容：
+
+    noinst_LIBRARIES = libprint.a
+    libprint_a_SOURCES = print.c ../include/print.h
+
+开始使用aututools：步骤如下：
+
+（1）输入并执行"autoscan"命令，生成configure.scan文件，修改configure.scan文件的内容如下(图中选中的位置为需要添加或修改的地方)，改完之后将文件重命名为configure.ac
+
+关于GNU <wbr>autotools的安装和使用
+
+（如果图片看不见，需要修改和添加的地方是：
+
+  AC_INIT(hello,0.01)
+
+  AM_INIT_AUTOMAKE
+
+  AC_PROG_RANLIB
+
+）
+
+（2）输入并执行"aclocal"命令
+
+（3）输入并执行"autoconf"命令
+
+（4）输入并执行"autoheader"命令
+
+（5）输入并执行"automake --add-missing"命令，该步骤如果出现
+"Makefile.am:require file ./NEWS" not found"
+"Makefile.am:require file "./README not found"
+则运行 touch NEWS README * *   ( * * 代表你所缺失的文件，个数、名称因个人情况而定)
+
+（6）输入并执行"./configure"命令，即可生成Makefile文件
+
+（7）输入并执行"make -f  Makefile "命令，编译文件，生成 hello 文件
+
+（8）" ./hello "执行hello文件,运行结果如下：
+关于GNU <wbr>autotools的安装和使用
+
+（如果图片看不见，结果是：Hello, Aillo)
