@@ -4,19 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <fcntl.h>
+#include <ctype.h> 
 #include <limits.h>
 
-struct conf_opts conf_para = {
-     "/usr/local/var/www/cgi-bin",  //cgi根路径
-     "index.html",         // 默认文件名
-     "/usr/local/var/www", //文件的根路径
-     "/etc/SHTTPD.conf", //配置文件
-     8080,  //端口
-     4,   //最大连接数
-     3, //超时时间
-     2 //初始化线程池线程数
-};
-static char *shortopts = "c:d:f:ho:l:m:t:";
+static char  const *shortopts = "c:d:f:ho:l:m:t:";
 
 static struct option longopts[] = {
     {"CGIRoot",required_argument, NULL,'c'},
@@ -46,7 +37,7 @@ static int Param_CmdParse(int argc,  char ** argv)
 {
         int c;
         int len = 0;
-        int value = 0 ;
+        long int value = 0 ;
 
         while((c = getopt_long(argc, argv, shortopts, longopts, NULL)) != -1)
         {
@@ -58,7 +49,6 @@ static int Param_CmdParse(int argc,  char ** argv)
                        {
 			       len = strlen(l_opt_arg);
 			       memcpy(conf_para.CGIRoot, l_opt_arg, len + 1);
-			       printf( "c================> %s==%d--%d\n", optarg, value, len);
 		       }
                     break;
 		 case 'd':
@@ -67,7 +57,6 @@ static int Param_CmdParse(int argc,  char ** argv)
                        {
 			       len = strlen(l_opt_arg);
 			       memcpy(conf_para.DefaultFile, l_opt_arg, len + 1);
-			       printf( "c================> %s==%d--%d\n", optarg, value, len);
 		       }
                     break;
 		 case 'f':
@@ -76,7 +65,6 @@ static int Param_CmdParse(int argc,  char ** argv)
                        {
 			       len = strlen(l_opt_arg);
 			       memcpy(conf_para.ConfigFile, l_opt_arg, len + 1);
-			       printf( "c================> %s==%d--%d\n", optarg, value, len);
 		       }
                     break;
 		 case 'o':
@@ -85,7 +73,6 @@ static int Param_CmdParse(int argc,  char ** argv)
                        {
 			       len = strlen(l_opt_arg);
 			       memcpy(conf_para.DocRoot, l_opt_arg, len + 1);
-			       printf( "c================> %s==%d--%d\n", optarg, value, len);
 		       }
                     break;
                  case 'l':
@@ -96,7 +83,6 @@ static int Param_CmdParse(int argc,  char ** argv)
 			       value = strtol(l_opt_arg, NULL, 10);
 			       if (value != LONG_MAX && value != LONG_MIN)
 				       conf_para.ListenPort = value;
-			       printf( "c================> %s==%d--%d\n", optarg, value, len);
 		       }
                     break;
                  case 'm':
@@ -107,7 +93,6 @@ static int Param_CmdParse(int argc,  char ** argv)
 			       value = strtol(l_opt_arg, NULL, 10);
 			       if (value != LONG_MAX && value != LONG_MIN)
 				       conf_para.MaxClient = value;
-			       printf( "c================> %s==%d--%d\n", optarg, value, len);
 		       }
                     break;
 	         case 't':
@@ -118,11 +103,10 @@ static int Param_CmdParse(int argc,  char ** argv)
 			       value = strtol(l_opt_arg, NULL, 10);
 			       if (value != LONG_MAX && value != LONG_MIN)
 				       conf_para.Timeout = value;
-			       printf( "c================> %s==%d--%d\n", optarg, value, len);
 		       }
                     break;
 	          case '?':
-			       printf( "c================> %s==%d--%d\n", optarg, value, len);
+			       printf( "c================> %s==%ld--%d\n", optarg, value, len);
 	          case 'h':
 			       display_usage();
 			       break;
@@ -134,7 +118,7 @@ static int Param_CmdParse(int argc,  char ** argv)
 
 void Para_FileParse(char *file)
 {
-     char  * line = NULL;
+     char *line = NULL;
      size_t len =  0;
      size_t n = 0;
      char *name = NULL, *value = NULL;
@@ -142,7 +126,7 @@ void Para_FileParse(char *file)
       fd = fopen(file, "r");
      if( NULL == fd  )
      {
-	     exit(EXIT_FAILURE);
+	    return ;
      }
      while ((n = getline(&line, &len, fd))  !=  -1 )
      {
@@ -175,6 +159,7 @@ void Para_FileParse(char *file)
             }
             *pos = '\0';
             printf("value:%s\n", value);
+            int ivalue;
             if (strncmp("CGIRoot", name , 7) == 0)
             {
                 memcpy(conf_para.CGIRoot, value, strlen(value) + 1);
@@ -191,24 +176,23 @@ void Para_FileParse(char *file)
 
             else if(strncmp("ListenPort", name, 10)== 0)
             {
-                conf_para.ListenPort = strtol(value, NULL, 10);
+                 ivalue = strtol(value, NULL, 10);
+                conf_para.ListenPort = ivalue;
             }
 
             else if(strncmp("MaxClient", name, 9)== 0)
             {
-                    conf_para.MaxClient = strtol(value, NULL, 10);
+                    ivalue = strtol(value, NULL, 10);
+                    conf_para.MaxClient  = ivalue;
             }
 
-           else if(strncpy("TimeOut", name , 7)== 0)
+           else if(strncmp("TimeOut", name , 7)== 0)
             {
-                conf_para.Timeout = strtol(value, NULL, 10);
-            }
-            else
-            {
-               printf("else:%d\n", strncmp("CGIRoot", name , 7) );
+                    ivalue = strtol(value, NULL, 10);
+                    conf_para.Timeout = ivalue;
             }
      }
-    close(fd);
+    fclose(fd);
     fd = NULL;
 }
 
@@ -217,9 +201,7 @@ int params_Init(int argc, char ** argv)
 {
 
    Param_CmdParse(argc, argv);
-   printf( "params_Init :Param_CmdParse======> %s\n",conf_para.ConfigFile );
    Para_FileParse( conf_para.ConfigFile);
-   printf( "params_Init :Para_FileParse======> %s\n",conf_para.CGIRoot );
    return 0;
 }
 
