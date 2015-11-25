@@ -18,6 +18,8 @@
 #define WORKER_IDEL    2
 #define WORKER_DETACHED 3
 #define WORKER_DETACHING 4
+
+char *request_parser( struct worker_ctrl *);
 int STATUS = STATUS_RUNNING;
 struct worker_ctrl  *wctls; 
 int WORKER_ISSTATUS(int state) 
@@ -73,15 +75,14 @@ int do_listen()
 
  static void process_conn_server(int i)
 {
-	int size = 0, s ;
-	char buff[BUFFLEN];  
+	int size = 0, s ; 
 	s = wctls[i].conn.cs;
-              wctls[i].opts.flags = WORKER_DETACHING;
-             memset(buff, 0 ,BUFFLEN);
-          	 size = read(s, buff, BUFFLEN);
+              wctls[i].opts.flags = WORKER_DETACHING; 
+          	 size = read(s, wctls[i].conn.dreq, 1024 * 16);
 	if(size != 0) 
 	{
-		printf("buff %s\n", buff);
+		printf("%s\n", wctls[i].conn.dreq); 
+		request_parser(&wctls[i]);
               }  
               wctls[i].opts.flags = WORKER_IDEL;
 	 wctls[i].conn.cs = -1;
@@ -112,8 +113,8 @@ void worker_add(int i){
             	{ 
             		perror("pthread fail");
             	}
-
 }
+
 void worker_destory(){
 	int i ;
 	for (i = 0 ; i < conf_para.MaxClient ; i++)

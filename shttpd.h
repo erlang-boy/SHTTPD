@@ -73,7 +73,7 @@ struct worker_opts{
 
 struct worker_conn{
     #define K 1024
-	char dreq[16*K]; // 存放接受到的客户端请求数据
+	char  dreq[16*K]; // 存放接受到的客户端请求数据
 	char dres[16*K];// 存放发送给客户端的数据
 	int cs;// 与客户端连接的套接字
 	int to;// 超时响应时间
