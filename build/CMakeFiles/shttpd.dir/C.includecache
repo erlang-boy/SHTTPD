@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/lhd/workspace/mypro/worktest/c_learn/c/SHTTPD/shttpd.h
+pthread.h
+-
+
+/home/lhd/workspace/mypro/worktest/c_learn/c/SHTTPD/shttpd_request.c
+stdio.h
+-
+string.h
+-
+shttpd.h
+/home/lhd/workspace/mypro/worktest/c_learn/c/SHTTPD/shttpd.h
+
