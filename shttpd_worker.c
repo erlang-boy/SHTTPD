@@ -81,10 +81,9 @@ int do_listen()
           	 size = read(s, wctls[i].conn.dreq, 1024 * 16);
 	if(size != 0) 
 	{
-		printf("%s\n", wctls[i].conn.dreq); 
 		request_parser(&wctls[i]);
-              }  
-              wctls[i].opts.flags = WORKER_IDEL;
+    }  
+     wctls[i].opts.flags = WORKER_IDEL;
 	 wctls[i].conn.cs = -1;
 	 printf("a clinet [%d] disconnect \n", s);
 	 close(s); 
@@ -94,7 +93,7 @@ static void *handle_request(void *arg)
 	int  i ;
             i = *(int *)arg;
             wctls[i].opts.flags = WORKER_IDEL;
-            	 wctls[i].opts.th = pthread_self(); 
+            	 wctls[i].opts.th = pthread_self();
             	 for (;;)
             	 {
             	 	usleep(1000);

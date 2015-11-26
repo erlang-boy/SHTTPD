@@ -1,1 +1,1 @@
-/usr/bin/cc      CMakeFiles/shttpd.dir/shttpd.o CMakeFiles/shttpd.dir/shttpd_uri.o CMakeFiles/shttpd.dir/shttpd_request.o CMakeFiles/shttpd.dir/shttpd_worker.o CMakeFiles/shttpd.dir/shttpd_params.o  -o shttpd -rdynamic -lpthread 
+/usr/bin/cc    -Wl,--enable-auto-import CMakeFiles/shttpd.dir/shttpd.o CMakeFiles/shttpd.dir/shttpd_params.o CMakeFiles/shttpd.dir/shttpd_request.o CMakeFiles/shttpd.dir/shttpd_uri.o CMakeFiles/shttpd.dir/shttpd_worker.o  -o shttpd.exe -Wl,--out-implib,libshttpd.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lpthread 
