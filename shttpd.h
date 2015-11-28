@@ -37,7 +37,21 @@ typedef struct vec
 	SHTTPD_METHOD_TYPE type;
 }vec;
 
-
+struct headers{
+	union variant cl; //内容长度
+	union variant ct; //内容类型
+	union variant connection; //连接状态
+	union variant ims; //最后修改时间
+	union variant user; //用户名称
+	union variant auth; //权限
+	union variant useragent; //用户
+	union variant referer; //参考
+	union variant cookie; // cookie
+	union variant location; // 位置
+	union variant range;  //范围
+	union variant status; //状态值
+	union variant transenc; //编码类型
+}；
 struct conn_response {
 	struct vec res;
 	time_t birth_time;
@@ -58,7 +72,7 @@ struct conn_request {
 	int mathod;
 	unsigned long major;
 	unsigned long minor;
-	// struct headers ch;
+	struct headers ch;
 	struct worker_conn *conn;
 	int err;
 };
