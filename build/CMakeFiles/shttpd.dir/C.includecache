@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/Administrator/SHTTPD/shttpd.c
+/home/lhd/workspace/mypro/worktest/c_learn/c/SHTTPD/shttpd.c
 stdio.h
 -
 stdlib.h
@@ -14,17 +14,17 @@ stdlib.h
 signal.h
 -
 shttpd.h
-/home/Administrator/SHTTPD/shttpd.h
+/home/lhd/workspace/mypro/worktest/c_learn/c/SHTTPD/shttpd.h
 
-/home/Administrator/SHTTPD/shttpd.h
+/home/lhd/workspace/mypro/worktest/c_learn/c/SHTTPD/shttpd.h
 pthread.h
 -
 
-/home/Administrator/SHTTPD/shttpd_params.c
+/home/lhd/workspace/mypro/worktest/c_learn/c/SHTTPD/shttpd_params.c
 stdio.h
 -
 shttpd.h
-/home/Administrator/SHTTPD/shttpd.h
+/home/lhd/workspace/mypro/worktest/c_learn/c/SHTTPD/shttpd.h
 getopt.h
 -
 stdlib.h
@@ -38,21 +38,21 @@ ctype.h
 limits.h
 -
 
-/home/Administrator/SHTTPD/shttpd_request.c
+/home/lhd/workspace/mypro/worktest/c_learn/c/SHTTPD/shttpd_request.c
 stdio.h
 -
 string.h
 -
 shttpd.h
-/home/Administrator/SHTTPD/shttpd.h
+/home/lhd/workspace/mypro/worktest/c_learn/c/SHTTPD/shttpd.h
 
-/home/Administrator/SHTTPD/shttpd_uri.c
+/home/lhd/workspace/mypro/worktest/c_learn/c/SHTTPD/shttpd_uri.c
 stdio.h
 -
 ctype.h
 -
 
-/home/Administrator/SHTTPD/shttpd_worker.c
+/home/lhd/workspace/mypro/worktest/c_learn/c/SHTTPD/shttpd_worker.c
 sys/types.h
 -
 sys/socket.h
@@ -74,5 +74,5 @@ pthread.h
 stdlib.h
 -
 shttpd.h
-/home/Administrator/SHTTPD/shttpd.h
+/home/lhd/workspace/mypro/worktest/c_learn/c/SHTTPD/shttpd.h
 

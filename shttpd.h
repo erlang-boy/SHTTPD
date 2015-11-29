@@ -4,7 +4,7 @@
 #include <pthread.h>
 
 typedef enum {
-       METHOD_GET = 1,
+       METHOD_GET ,
        METHOD_POST,
        METHOD_PUT,
        METHOD_HEAD
@@ -38,20 +38,20 @@ typedef struct vec
 }vec;
 
 struct headers{
-	union variant cl; //内容长度
-	union variant ct; //内容类型
-	union variant connection; //连接状态
-	union variant ims; //最后修改时间
-	union variant user; //用户名称
-	union variant auth; //权限
-	union variant useragent; //用户
-	union variant referer; //参考
-	union variant cookie; // cookie
-	union variant location; // 位置
-	union variant range;  //范围
-	union variant status; //状态值
-	union variant transenc; //编码类型
-}；
+	 int cl; //内容长度
+	 int ct; //内容类型
+	 int connection; //连接状态
+	 int ims; //最后修改时间
+	 int user; //用户名称
+	 int auth; //权限
+	 int useragent; //用户
+	 int referer; //参考
+	 int cookie; // cookie
+	 int location; // 位置
+	 int range;  //范围
+	 int status; //状态值
+	 int transenc; //编码类型
+};
 struct conn_response {
 	struct vec res;
 	time_t birth_time;
@@ -69,7 +69,7 @@ struct conn_request {
 	char *head;
 	char *uri;
 	// char rpath[URI_MAX];//todo
-	int mathod;
+	int method;
 	unsigned long major;
 	unsigned long minor;
 	struct headers ch;
